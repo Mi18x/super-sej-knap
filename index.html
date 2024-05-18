@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Sej Knapp</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            background-color: white;
+            transition: background-color 2s;
+            overflow: hidden;
+            margin: 0;
+        }
+        #super-text {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        #yes-button {
+            font-size: 2em;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        #click-count {
+            font-size: 2em;
+            margin-left: 20px;
+        }
+        .firework {
+            position: fixed;
+            width: 5px;
+            height: 5px;
+            background: red;
+            animation: explode 1s ease-out forwards;
+        }
+        @keyframes explode {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(50);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="super-text">Jeg er super sej</div>
+    <div>
+        <button id="yes-button">Yes</button>
+        <span id="click-count">0</span>
+    </div>
+
+    <script>
+        // Hent klik tæller fra localStorage, eller sæt til 0 hvis den ikke findes
+        let clickCount = localStorage.getItem('clickCount') || 0;
+        document.getElementById('click-count').textContent = clickCount;
+
+        function createFireworks() {
+            for (let i = 0; i < 100; i++) {
+                const firework = document.createElement('div');
+                firework.classList.add('firework');
+                firework.style.top = Math.random() * 100 + '%';
+                firework.style.left = Math.random() * 100 + '%';
+                document.body.appendChild(firework);
+                setTimeout(() => firework.remove(), 1000);
+            }
+        }
+
+        function updateClickCount() {
+            clickCount++;
+            localStorage.setItem('clickCount', clickCount);
+            document.getElementById('click-count').textContent = clickCount;
+            console.log(`Knappen er blevet trykket på ${clickCount} gange`);
+        }
+
+        document.getElementById('yes-button').addEventListener('click', () => {
+            document.body.style.backgroundColor = 'black';
+            setTimeout(() => {
+                createFireworks();
+                setTimeout(() => {
+                    document.body.style.backgroundColor = 'white';
+                }, 4000);
+            }, 2000);
+            updateClickCount();
+        });
+
+        // Log antallet af klik ved indlæsning af siden
+        console.log(`Knappen er blevet trykket på ${clickCount} gange`);
+    </script>
+</body>
+</html>
